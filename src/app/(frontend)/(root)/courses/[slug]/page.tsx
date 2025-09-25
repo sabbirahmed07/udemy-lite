@@ -11,6 +11,8 @@ import { Media } from '@/payload-types'
 
 export default async function CourseDetail(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params
+  console.log(params)
+
   const course = await getSingleCourse(params.slug)
 
   if (!course) {

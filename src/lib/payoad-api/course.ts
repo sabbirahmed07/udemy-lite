@@ -14,6 +14,24 @@ export async function getCourses(limit = 5): Promise<Course[]> {
   return courses
 }
 
+// ✅ Courses API
+export async function getCoursesByCategory(caetgoryId: string, limit = 5): Promise<Course[]> {
+  const payload = await getPayloadClient()
+
+  const { docs: courses } = await payload.find({
+    collection: 'courses',
+    where: {
+      category: {
+        equals: caetgoryId,
+      },
+    },
+    limit,
+    depth: 1, // populate thumbnail, category
+  })
+
+  return courses
+}
+
 export async function getSingleCourse(
   slug: string,
 ): Promise<(Course & { lessons?: Lesson[] }) | null> {

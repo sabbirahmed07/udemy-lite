@@ -1,4 +1,4 @@
-import { getCourses } from '@/lib/payoad-api/course'
+import { getCourses, getCoursesByCategory } from '@/lib/payoad-api/course'
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card'
 import {
   CourseThumbnail,
@@ -7,10 +7,23 @@ import {
   CourseMeta,
   CourseCTA,
 } from '@/components/shared/SingleCourse'
-import { Media } from '@/payload-types'
+import { Course, Media } from '@/payload-types'
 
-export default async function CoursesPage() {
-  const courses = await getCourses()
+export default async function CoursesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category: string }>
+}) {
+  const category = (await searchParams).category
+
+  let courses: Course[] = []
+  if (category) {
+    console.log('category', category)
+
+    courses = await getCoursesByCategory(category)
+  }
+
+  courses = await getCourses()
 
   return (
     <div className="p-6">
